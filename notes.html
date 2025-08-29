@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkyNotes — Мои заметки</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-r from-blue-300 to-indigo-400 p-10 min-h-screen">
+<div class="max-w-3xl mx-auto bg-white p-8 rounded-3xl shadow-xl">
+<h1 class="text-3xl font-bold mb-6 text-indigo-700">Привет, {{ username }}!</h1>
+<form method="POST" class="mb-6 flex space-x-2">
+    <input type="hidden" name="action" value="add">
+    <input type="text" name="content" placeholder="Новая заметка" class="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-300">
+    <button class="bg-indigo-600 text-white px-6 rounded-lg hover:bg-indigo-700 transition">Добавить</button>
+</form>
+<ul class="space-y-3">
+{% for note in notes %}
+<li class="flex justify-between items-center p-3 border rounded-lg bg-indigo-50">
+    <span class="flex-1">{{ note }}</span>
+    <form method="POST" class="flex space-x-2">
+        <input type="hidden" name="index" value="{{ loop.index0 }}">
+        <input type="text" name="content" placeholder="Редактировать" class="p-2 border rounded-lg">
+        <button name="action" value="edit" class="bg-yellow-400 px-3 rounded hover:bg-yellow-500 transition">Изм.</button>
+        <button name="action" value="delete" class="bg-red-500 text-white px-3 rounded hover:bg-red-600 transition">Удалить</button>
+    </form>
+</li>
+{% endfor %}
+</ul>
+<div class="mt-6 flex space-x-4">
+<a href="/logout" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition">Выйти</a>
+{% if username != "Guest" %}
+<a href="/delete_account" class="bg-red-700 text-white py-2 px-4 rounded hover:bg-red-800 transition">Удалить аккаунт</a>
+{% endif %}
+</div>
+</div>
+</body>
+</html>
