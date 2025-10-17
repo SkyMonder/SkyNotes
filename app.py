@@ -96,9 +96,10 @@ def restore_data_from_git():
     if not os.path.exists(DATA_DIR) or not os.listdir(DATA_DIR):
         print("🗂 Восстанавливаем базу данных из GitHub...")
         if os.path.exists(".git"):
-            subprocess.run(["git", "pull"], check=False)
-        else:
-            subprocess.run(["git", "clone", REPO_URL, "."], check=False)
+            subprocess.run(["git", "remote", "remove", "origin"], check=False)
+        subprocess.run(["git", "init"], check=False)
+        subprocess.run(["git", "remote", "add", "origin", REPO_URL], check=False)
+        subprocess.run(["git", "pull", "origin", "main"], check=False)
         print("✅ Данные восстановлены из репозитория.")
 
 def auto_backup():
@@ -120,3 +121,4 @@ if __name__ == "__main__":
     restore_data_from_git()
     threading.Thread(target=auto_backup, daemon=True).start()
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
+
